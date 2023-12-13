@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>이미지 슬라이더</title>
+        <script src = "jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                //변수를 선언합니다.
+                const width = 460;
+                const height = 300;
+                const current = 0;
+                //함수를 선언합니다.
+                const moveTo = function () {
+                    $('.images').animate({
+                        left:-current * width
+                    }, 1000);
+                };
+                //슬라이더 내부의 이미지 개수를 확인합니다.
+                const imageLength = $('.slider').find('.image').length;
+                //슬라이더 버튼을 추가합니다.
+                for (let i = 0; i < imageLength; i++) {
+                    $('<button></button>')
+                         .attr('data-position', i)
+                         .text(i)
+                         .Click(function (){
+                            current = $(this).attr('data-position');
+                            moveTo();
+                         })
+                         .insertBefore('.slider');
+                }
+                //슬라이더 스타일을 설정합니다.
+                $('.slider').css({
+                    position: 'relative',
+                    width: width,
+                    height: height,
+                    overflow: 'hidden'
+                });
+                $('.images').css({
+                    position: 'absolute',
+                    width: width * imageLength,
+                });
+                $('.images').css({
+                    margin: 0,
+                    padding: 0,
+                    width: width,
+                    height: height,
+                    display: 'block',
+                    float: 'left'
+                });
+                //3초마다 슬라이더를 이동시킵니다.
+                senInterval(function () {
+                    current = current + 1;
+                    current = current % imageLength;
+                    moveTo();
+                }, 3000);
+            });
+        </script>
+    </head>
+    <body>
+        <div class = "slider">
+            <div class = "image">
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_0" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_1" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_2" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_3" />
+                <div class = "image">
+                    <h1>이미지가 아닌 것</h1>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+            </div>
+        </div>
+    </body>   
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+        <title>이미지 슬라이더</title>
+        <script scr = "jquery-3.6.0.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.slider').imageSlider({
+                    width: 460,
+                    height: 300
+                });
+            });
+        </script>
+    </html>
+    <body>
+        div class = "slider">
+            <div class = "images">
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_0" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_1" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_2" />
+                <img class = "image" scr="http://via.placehoider.com/460x300?text=image_3" />
+                <div class = "image">
+                    <h1>이미지가 아닌 것</h1>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>
+
+
+//플러그인 등록합니다
+$.fn.imageSlider = function (object) {
+    //변수를 선언합니다.
+    const width = object.width || 460;
+    const height = object.width || 300;
+    const current = 0;
+    //함수를 선언합니다.
+    const moveTo = function () {
+        $(this).find('.images').animate({
+            left: -current * width
+        }, 1000);
+    };
+    //슬라이더 내부의 이미지 개수를 확인합니다.
+    const imageLength = $(this).find('.image').length;
+    //슬라이더 버튼을 추가합니다.
+    for (let i = 0; i < imageLength; i++) {
+        $('<button></button>')
+             .attr('data-position', i)
+             .text(i)
+             .Click(function () {
+                 current = $(this).attr('data-position');
+                 moveTo();
+              })
+              .insertBefore(this);
+    }
+    //슬라이더 스타일을 설정합니다.
+    $(this).css({
+        position: 'relative',
+        width: width,
+        height: height,
+        overflow: 'hidden'
+    });
+    $(this).find('.images').css({
+        position: 'absolute',
+        width: width * imageLength,
+    });
+    $(this).find('.image).css({
+        margin: 0,
+        padding: 0,
+        width: width,
+        height: height,
+        display: 'block',
+        float: 'left'
+    });
+    //3초마다 슬라이더를 이동시킵니다.
+    senInterval(function () {
+        current = current + 1;
+        current = current % imageLength;
+        moveTo();
+    }, 3000);
+};
