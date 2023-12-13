@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <title>2302528 권지수</title>
+<head>
+</head>
+<body>
+    <canvas id="canvas" width="578" height="200"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+
+        context.beginPath();
+        context.moveTo(100, 150);
+        context.lineTo(450, 50);
+    </script>
+</body>
+</html>
+
+//기본 통신 코드
+const app = require('express')();
+const server = require('http').Server(app);
+const io = require('socket.io')(server);
+
+//서버를 실행합니다.
+server.listen(52273);
+
+app.get('/', (req, res) => {
+    res.sendFile(_dirname +'/index.html');
+});
+
+io.on('connection', (socket) => {
+    socket.emit('news', {
+        hello: 'world'
+    });
+});
+
+
+<script src = "/socket.io/socket.io.js"></script>
+<script>
+    const socket = io.connect('http://localhost');
+    socket.on('news', function (data){
+        console.log(data);
+        socket.emit('other event',{
+            my: 'data'
+        });
+    });
+</script>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="jquery-3.6.0.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        $(document).ready (function()) {
+            //변수를 선언합니다.
+            let color = 'black';
+            let width = 1;
+            let isDown = false;
+            let newPoint, oldPoint;
+            //소켓을 연결합니다.
+            const socket = io.connect();
+            //캔버스를 추출합니다.
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+        }
+            //마우스 이벤트를 연결합니다.
+            $(canvas).mousedownx(function (event){
+                isDown = true;
+                oldPoint = {
+                    x: event.pageX - $(this).position().left,
+                    y: event.pageY - $(this).position().top
+                };
+            });
+            $(canvas).mousemove(function (event){
+                if (lisDown) {return;}
+                newPoint ={
+                    x: event.pageX - $(this).position().left,
+                    y: event.pageY - $(this).position().top
+                };
+                socket.emit('line', {
+                    x1: oldPoint.x,
+                    y1: oldPoint.y,
+                    x2: newPoint.x,
+                    y2: newPoint.y,
+                    color: color,
+                    width: width
+                });
+                oldPoint = newPoint;
+        });
+        $(canvas).mouseup(function (event){
+            isDown = false;
+            oldPoint = {
+                x: event.pageX - $(this).position().left,
+                y: event.pageY - $(this).position().top
+            };
+        });
+    </script>
+</head>
+</html>
